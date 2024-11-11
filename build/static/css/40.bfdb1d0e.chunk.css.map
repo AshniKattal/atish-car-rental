@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/pages/dashboard/GeneralApp.css"],"names":[],"mappings":"AAAA,eACE,WAAY,CACZ,eAAgB,CAChB,WACF,CAEA,WACE,cACF,CAEA,SACE,WACF","file":"40.bfdb1d0e.chunk.css","sourcesContent":[".cardContainer {\n  padding: 1em;\n  min-height: 10em;\n  height: 100%;\n}\n\n.clickable {\n  cursor: pointer;\n}\n\n.cardDiv {\n  height: 100%;\n}"]}
