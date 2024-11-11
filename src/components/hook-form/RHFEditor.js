@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 // form
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext, Controller } from "react-hook-form";
 // @mui
-import { FormHelperText } from '@mui/material';
+import { FormHelperText } from "@mui/material";
 //
-import Editor from '../editor';
+import Editor from "../editor";
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ RHFEditor.propTypes = {
   name: PropTypes.string,
 };
 
-export default function RHFEditor({ name, ...other }) {
+export default function RHFEditor({ name, disabled, ...other }) {
   const { control } = useFormContext();
 
   return (
@@ -21,12 +21,13 @@ export default function RHFEditor({ name, ...other }) {
       control={control}
       render={({ field, fieldState: { error } }) => (
         <Editor
+          disabled={disabled}
           id={name}
           value={field.value}
           onChange={field.onChange}
           error={!!error}
           helperText={
-            <FormHelperText error sx={{ px: 2, textTransform: 'capitalize' }}>
+            <FormHelperText error sx={{ px: 2, textTransform: "capitalize" }}>
               {error?.message}
             </FormHelperText>
           }

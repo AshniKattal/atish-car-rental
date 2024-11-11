@@ -1,0 +1,78 @@
+
+.content {
+    display: flex;
+    flex-grow: 1;
+}
+  
+.left {
+    width: 40%;
+    position: sticky;
+    top: 5em;
+    height: 60vh;
+    /* background-color: #f0f0f0; */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 3px;
+}
+
+.right {
+    width: 60%;
+    overflow-y: 'hidden';
+    height: 100%;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.card {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 70vh;
+}
+
+.title {
+    background-color: #ffffff;
+    padding-top: 2em;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1; /* Ensure it stays above other content */
+  }
+
+  /* Class for a div with a background image on the border */
+.border-image {
+    border-width: 30px;
+    border-radius: 10px;
+    border-style: solid;
+    border-image-source: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGqtQqjjr2wjgOL0yyeDXXcbu7QJpOb66UuA&s'); /* Replace with your image path */
+    border-image-slice: 30; /* Adjust as needed */
+    border-image-repeat: round; /* Options: stretch, repeat, round */
+  }
+  
+  /* Infinite scrolling animation */
+@keyframes scroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+  }
+  
+  .scrollable {
+    animation: scroll 50s linear infinite;
+  }
+
+
+  .custom-dots li {
+    margin: 0 15px;
+  }
+  
+  .custom-dots li button {
+    opacity: 0; /* Hide the default buttons */
+  }
+  
+  .custom-dots li.slick-active div {
+    transform: scale(1.2); /* Highlight the active icon */
+  }

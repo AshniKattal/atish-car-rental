@@ -1,44 +1,49 @@
-import * as Yup from 'yup';
-import { useSnackbar } from 'notistack';
-import { useCallback } from 'react';
+import * as Yup from "yup";
+import { useSnackbar } from "notistack";
+import { useState, useCallback, useEffect } from "react";
 // form
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 // @mui
-import { Box, Grid, Card, Stack, Typography } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Box, Grid, Card, Stack, Typography, Button } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 // hooks
-import useAuth from '../../../../hooks/useAuth';
+import useAuth from "../../../../hooks/useAuth";
 // utils
-import { fData } from '../../../../utils/formatNumber';
-// _mock
-import { countries } from '../../../../_mock';
+import { fData } from "../../../../utils/formatNumber";
 // components
-import { FormProvider, RHFSwitch, RHFSelect, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
+import {
+  FormProvider,
+  RHFTextField,
+  RHFUploadAvatar,
+} from "../../../../components/hook-form";
+import db, { storage } from "../../../../firebase";
+import { useDispatch } from "react-redux";
+import { setLoading } from "../../../../features/globalSlice";
 
 // ----------------------------------------------------------------------
 
 export default function AccountGeneral() {
+  const dispatch = useDispatch();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const { user } = useAuth();
 
+  const [us_file, set_us_file] = useState(null);
+
   const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required'),
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    email: Yup.string().required("Email is required"),
   });
 
   const defaultValues = {
-    displayName: user?.displayName || '',
-    email: user?.email || '',
-    photoURL: user?.photoURL || '',
-    phoneNumber: user?.phoneNumber || '',
-    country: user?.country || '',
-    address: user?.address || '',
-    state: user?.state || '',
-    city: user?.city || '',
-    zipCode: user?.zipCode || '',
-    about: user?.about || '',
-    isPublic: user?.isPublic || '',
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    contactNumber: user?.contactNumber || "",
+    photoURL: user?.photoURL || "",
   };
 
   const methods = useForm({
@@ -52,10 +57,38 @@ export default function AccountGeneral() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async () => {
+  useEffect(() => {
+    if (user && setValue) {
+      setValue("firstName", user?.firstName || "");
+      setValue("lastName", user?.lastName || "");
+      setValue("email", user?.email || "");
+      setValue("contactNumber", user?.contactNumber || "");
+      setValue("photoURL", user?.photoURL || "");
+    }
+  }, [user, setValue]);
+
+  const onSubmit = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      enqueueSnackbar('Update success!');
+      db.collection("users")
+        .doc(user?.id)
+        .set(
+          {
+            firstName: data?.firstName || "",
+            lastName: data?.lastName || "",
+            email: data?.email || "",
+            contactNumber: data?.contactNumber || "",
+            // photoURL: data?.photoURL?.preview || '',
+          },
+          { merge: true }
+        )
+        .then(() => {
+          enqueueSnackbar("Update success!");
+        })
+        .catch((err) => {
+          enqueueSnackbar(`Error occured: ${err?.message}`, {
+            variant: "error",
+          });
+        });
     } catch (error) {
       console.error(error);
     }
@@ -66,8 +99,9 @@ export default function AccountGeneral() {
       const file = acceptedFiles[0];
 
       if (file) {
+        set_us_file(file);
         setValue(
-          'photoURL',
+          "photoURL",
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -77,11 +111,59 @@ export default function AccountGeneral() {
     [setValue]
   );
 
+  const uploadImage = (o_file) => {
+    if (o_file && o_file?.name !== undefined && o_file?.name !== "") {
+      dispatch(setLoading(true));
+      const uploadTask = storage
+        .ref(`images/${user?.id}/${o_file.name}`)
+        .put(o_file);
+      uploadTask.on(
+        "state_changed",
+        () => {},
+        (error) => {
+          enqueueSnackbar(`Error occured: ${error}`, { variant: "error" });
+          dispatch(setLoading(false));
+        },
+        () => {
+          storage
+            .ref(`images/${user?.id}`)
+            .child(o_file.name)
+            .getDownloadURL()
+            .then((url) => {
+              db.collection("users")
+                .doc(user?.id)
+                .set(
+                  {
+                    photoURL: url || "",
+                  },
+                  { merge: true }
+                )
+                .then(() => {
+                  enqueueSnackbar("Image saved successfully");
+                  set_us_file(null);
+                  dispatch(setLoading(false));
+                })
+                .catch((err) => {
+                  enqueueSnackbar(`Error occured: ${err?.message}`, {
+                    variant: "error",
+                  });
+                  dispatch(setLoading(false));
+                });
+            });
+        }
+      );
+    } else {
+      enqueueSnackbar("Image uploaded could be identified", {
+        variant: "error",
+      });
+    }
+  };
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
+          <Card sx={{ py: 10, px: 3, textAlign: "center" }}>
             <RHFUploadAvatar
               name="photoURL"
               accept="image/*"
@@ -92,10 +174,10 @@ export default function AccountGeneral() {
                   variant="caption"
                   sx={{
                     mt: 2,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.secondary',
+                    mx: "auto",
+                    display: "block",
+                    textAlign: "center",
+                    color: "text.secondary",
                   }}
                 >
                   Allowed *.jpeg, *.jpg, *.png, *.gif
@@ -103,8 +185,15 @@ export default function AccountGeneral() {
                 </Typography>
               }
             />
-
-            <RHFSwitch name="isPublic" labelPlacement="start" label="Public Profile" sx={{ mt: 5 }} />
+            <br />
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={us_file === null}
+              onClick={() => uploadImage(us_file)}
+            >
+              Save image
+            </Button>
           </Card>
         </Grid>
 
@@ -112,37 +201,27 @@ export default function AccountGeneral() {
           <Card sx={{ p: 3 }}>
             <Box
               sx={{
-                display: 'grid',
+                display: "grid",
                 rowGap: 3,
                 columnGap: 2,
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+                gridTemplateColumns: {
+                  xs: "repeat(1, 1fr)",
+                  sm: "repeat(2, 1fr)",
+                },
               }}
             >
-              <RHFTextField name="displayName" label="Name" />
-              <RHFTextField name="email" label="Email Address" />
-
-              <RHFTextField name="phoneNumber" label="Phone Number" />
-              <RHFTextField name="address" label="Address" />
-
-              <RHFSelect name="country" label="Country" placeholder="Country">
-                <option value="" />
-                {countries.map((option) => (
-                  <option key={option.code} value={option.label}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
-
-              <RHFTextField name="state" label="State/Region" />
-
-              <RHFTextField name="city" label="City" />
-              <RHFTextField name="zipCode" label="Zip/Code" />
+              <RHFTextField name="firstName" label="First name" />
+              <RHFTextField name="lastName" label="Last name" />
+              <RHFTextField name="email" label="Email Address" disabled />
+              <RHFTextField name="contactNumber" label="Contact number" />
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-              <RHFTextField name="about" multiline rows={4} label="About" />
-
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+              >
                 Save Changes
               </LoadingButton>
             </Stack>

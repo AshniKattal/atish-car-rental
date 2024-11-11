@@ -1,24 +1,25 @@
-import PropTypes from 'prop-types';
-import { m } from 'framer-motion';
+import PropTypes from "prop-types";
+import { m } from "framer-motion";
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { alpha, styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
 //
-import Logo from './Logo';
-import ProgressBar from './ProgressBar';
+import Logo from "./Logo";
+import ProgressBar from "./ProgressBar";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
+const RootStyle = styled("div")(({ theme }) => ({
   right: 0,
   bottom: 0,
   zIndex: 99999,
-  width: '100%',
-  height: '100%',
-  position: 'fixed',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  width: "100%",
+  height: "100%",
+  position: "fixed",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   backgroundColor: theme.palette.background.default,
 }));
 
@@ -37,18 +38,25 @@ export default function LoadingScreen({ isDashboard, ...other }) {
         <RootStyle {...other}>
           <m.div
             initial={{ rotateY: 0 }}
-            animate={{ rotateY: 360 }}
+            /* animate={{ rotateY: 360 }}
             transition={{
               duration: 2,
               ease: 'easeInOut',
               repeatDelay: 1,
               repeat: Infinity,
+            }} */
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <Logo disabledLink sx={{ width: 64, height: 64 }} />
+            <CircularProgress />
+            {/*  <Logo disabledLink sx={{ width: 64, height: 64 }} /> */}
           </m.div>
 
-          <Box
+          {/* <Box
             component={m.div}
             animate={{
               scale: [1.2, 1, 1, 1.2, 1.2],
@@ -86,7 +94,7 @@ export default function LoadingScreen({ isDashboard, ...other }) {
               position: 'absolute',
               border: (theme) => `solid 8px ${alpha(theme.palette.primary.dark, 0.24)}`,
             }}
-          />
+          /> */}
         </RootStyle>
       )}
     </>

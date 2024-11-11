@@ -1,32 +1,34 @@
-import PropTypes from 'prop-types';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 // @mui
-import { styled, useTheme } from '@mui/material/styles';
-import { Box, Stack, Drawer } from '@mui/material';
+import { styled, useTheme } from "@mui/material/styles";
+import { Box, Stack, Drawer, Typography } from "@mui/material";
 // hooks
-import useResponsive from '../../../hooks/useResponsive';
-import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
+import useResponsive from "../../../hooks/useResponsive";
+import useCollapseDrawer from "../../../hooks/useCollapseDrawer";
 // utils
-import cssStyles from '../../../utils/cssStyles';
+import cssStyles from "../../../utils/cssStyles";
 // config
-import { NAVBAR } from '../../../config';
+import { NAVBAR } from "../../../config";
 // components
-import Logo from '../../../components/Logo';
-import Scrollbar from '../../../components/Scrollbar';
-import { NavSectionVertical } from '../../../components/nav-section';
+import Scrollbar from "../../../components/Scrollbar";
+import { NavSectionVertical } from "../../../components/nav-section";
 //
-import navConfig from './NavConfig';
-import NavbarDocs from './NavbarDocs';
-import NavbarAccount from './NavbarAccount';
-import CollapseButton from './CollapseButton';
+import navConfig from "./NavConfig";
+import NavbarAccount from "./NavbarAccount";
+import Logo from "../../../components/Logo";
+import CollapseButton from "./CollapseButton";
+import Label from "../../../components/Label";
+import { useSelector } from "react-redux";
+import { selectTemplate } from "src/features/templateSlice";
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('lg')]: {
+const RootStyle = styled("div")(({ theme }) => ({
+  [theme.breakpoints.up("lg")]: {
     flexShrink: 0,
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       duration: theme.transitions.duration.shorter,
     }),
   },
@@ -40,14 +42,29 @@ NavbarVertical.propTypes = {
 };
 
 export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
+  const { template } = useSelector(selectTemplate);
+
   const theme = useTheme();
 
   const { pathname } = useLocation();
 
-  const isDesktop = useResponsive('up', 'lg');
+  const isDesktop = useResponsive("up", "lg");
 
-  const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
-    useCollapseDrawer();
+  const {
+    isCollapse,
+    collapseClick,
+    collapseHover,
+    onToggleCollapse,
+    onHoverEnter,
+    onHoverLeave,
+  } = useCollapseDrawer();
+
+  useEffect(() => {
+    if (isOpenSidebar) {
+      onCloseSidebar();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -60,7 +77,15 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
     <Scrollbar
       sx={{
         height: 1,
-        '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
+        "& .simplebar-content": {
+          height: 1,
+          display: "flex",
+          flexDirection: "column",
+        },
+        background:
+          theme.palette.mode === "light"
+            ? theme.palette.grey[200]
+            : theme.palette.grey[800],
       }}
     >
       <Stack
@@ -70,25 +95,80 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
           pb: 2,
           px: 2.5,
           flexShrink: 0,
-          ...(isCollapse && { alignItems: 'center' }),
+          ...(isCollapse && { alignItems: "center" }),
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Logo />
+        <Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Stack
+              spacing={1}
+              direction="row"
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              {isDesktop && !isCollapse && (
+                <CollapseButton
+                  onToggleCollapse={onToggleCollapse}
+                  collapseClick={collapseClick}
+                />
+              )}
 
-          {isDesktop && !isCollapse && (
-            <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />
+              {!isCollapse ? (
+                <>
+                  <Logo />
+
+                  {template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
+                    <></>
+                  ) : (
+                    <Typography variant="h4">PlusInvoice</Typography>
+                  )}
+                </>
+              ) : (
+                <Logo />
+              )}
+            </Stack>
+          </Stack>
+          {!isCollapse &&
+          template !== process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
+            <div align="center">
+              <Label
+                style={{
+                  width: 100,
+                  marginTop: 5,
+                  color: theme.palette.primary.main,
+                  backgroundColor: theme.palette.primary.lighter,
+                }}
+              >
+                PlusMauritius
+              </Label>
+            </div>
+          ) : (
+            <></>
           )}
         </Stack>
 
         <NavbarAccount isCollapse={isCollapse} />
+
+        <Typography variant="h6">
+          {!isCollapse
+            ? `Version: ${process.env.REACT_APP_VERSION}`
+            : `v${process.env.REACT_APP_VERSION}`}
+        </Typography>
       </Stack>
 
-      <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />
+      <NavSectionVertical
+        navConfig={navConfig}
+        isCollapse={isCollapse}
+        sx={{ pb: 15 }}
+      />
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {!isCollapse && <NavbarDocs />}
+      {/* !isCollapse && <NavbarDocs /> */}
     </Scrollbar>
   );
 
@@ -96,15 +176,21 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
     <RootStyle
       sx={{
         width: {
-          lg: isCollapse ? NAVBAR.DASHBOARD_COLLAPSE_WIDTH : NAVBAR.DASHBOARD_WIDTH,
+          lg: isCollapse
+            ? NAVBAR.DASHBOARD_COLLAPSE_WIDTH
+            : NAVBAR.DASHBOARD_WIDTH,
         },
         ...(collapseClick && {
-          position: 'absolute',
+          position: "absolute",
         }),
       }}
     >
       {!isDesktop && (
-        <Drawer open={isOpenSidebar} onClose={onCloseSidebar} PaperProps={{ sx: { width: NAVBAR.DASHBOARD_WIDTH } }}>
+        <Drawer
+          open={isOpenSidebar}
+          onClose={onCloseSidebar}
+          PaperProps={{ sx: { width: NAVBAR.DASHBOARD_WIDTH } }}
+        >
           {renderContent}
         </Drawer>
       )}
@@ -118,10 +204,10 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
           PaperProps={{
             sx: {
               width: NAVBAR.DASHBOARD_WIDTH,
-              borderRightStyle: 'dashed',
-              bgcolor: 'background.default',
+              borderRightStyle: "dashed",
+              bgcolor: "background.default",
               transition: (theme) =>
-                theme.transitions.create('width', {
+                theme.transitions.create("width", {
                   duration: theme.transitions.duration.standard,
                 }),
               ...(isCollapse && {

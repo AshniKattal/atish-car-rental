@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import PropTypes from "prop-types";
+import { useState } from "react";
 // @mui
-import { Divider, Collapse } from '@mui/material';
+import { Divider, Collapse } from "@mui/material";
 //
-import ProductDetailsReviewForm from './ProductDetailsReviewForm';
-import ProductDetailsReviewList from './ProductDetailsReviewList';
-import ProductDetailsReviewOverview from './ProductDetailsReviewOverview';
+import ProductDetailsReviewForm from "./ProductDetailsReviewForm";
+import ProductDetailsReviewList from "./ProductDetailsReviewList";
+import ProductDetailsReviewOverview from "./ProductDetailsReviewOverview";
 
 // ----------------------------------------------------------------------
 
@@ -26,12 +26,19 @@ export default function ProductDetailsReview({ product }) {
 
   return (
     <>
-      <ProductDetailsReviewOverview product={product} onOpen={handleOpenReviewBox} />
+      <ProductDetailsReviewOverview
+        product={product}
+        onOpen={handleOpenReviewBox}
+      />
 
       <Divider />
 
       <Collapse in={reviewBox}>
-        <ProductDetailsReviewForm onClose={handleCloseReviewBox} id="move_add_review" />
+        <ProductDetailsReviewForm
+          onClose={handleCloseReviewBox}
+          id="move_add_review"
+          product={product}
+        />
         <Divider />
       </Collapse>
 

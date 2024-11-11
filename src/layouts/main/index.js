@@ -1,48 +1,44 @@
-import { useLocation, Outlet } from 'react-router-dom';
+import { Outlet } from "react-router-dom";
 // @mui
-import { Box, Link, Container, Typography, Stack } from '@mui/material';
+import { Box, Stack } from "@mui/material";
 // components
-import Logo from '../../components/Logo';
 //
-import MainFooter from './MainFooter';
-import MainHeader from './MainHeader';
+import MainHeader from "./MainHeader";
+import useAuth from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { selectTemplate } from "src/features/templateSlice";
+import { lazy, Suspense } from "react";
+
+const FooterCarRentalAtish = lazy(() =>
+  import("src/pages/home/FooterCarRentalAtish")
+);
 
 // ----------------------------------------------------------------------
 
-export default function MainLayout() {
-  const { pathname } = useLocation();
+export default function MainLayout({ children }) {
+  const { template } = useSelector(selectTemplate);
 
-  const isHome = pathname === '/';
+  const { user } = useAuth();
 
   return (
     <Stack sx={{ minHeight: 1 }}>
-      <MainHeader />
+      {template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ||
+      !user?.id ? (
+        <MainHeader />
+      ) : (
+        <></>
+      )}
 
-      <Outlet />
+      {children ? children : <Outlet />}
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {!isHome ? (
-        <MainFooter />
+      {template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
+        <Suspense fallback={<></>}>
+          <FooterCarRentalAtish />
+        </Suspense>
       ) : (
-        <Box
-          sx={{
-            py: 5,
-            textAlign: 'center',
-            position: 'relative',
-            bgcolor: 'background.default',
-          }}
-        >
-          <Container>
-            <Logo sx={{ mb: 1, mx: 'auto' }} />
-
-            <Typography variant="caption" component="p">
-              © All rights reserved
-              <br /> made by &nbsp;
-              <Link href="https://minimals.cc/">minimals.cc</Link>
-            </Typography>
-          </Container>
-        </Box>
+        <></>
       )}
     </Stack>
   );

@@ -1,0 +1,20 @@
+/* Carousel.css */
+.carousel-wrapper {
+    position: sticky;
+    top: 0; /* Adjust this based on your design */
+    height: 100vh;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+  }
+  
+  .carousel {
+    display: flex;
+    transition: transform 0.3s ease-out;
+  }
+  
+  .carousel-slide {
+    min-width: 100vw; /* Adjust based on your desired slide width */
+    box-sizing: border-box;
+  }
+  

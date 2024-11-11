@@ -1,0 +1,11 @@
+.banner {
+    position: relative;
+    height: 100vh;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2em;
+    transition: clip-path 0.1s ease-out;
+}

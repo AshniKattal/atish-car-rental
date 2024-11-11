@@ -1,22 +1,22 @@
-import PropTypes from 'prop-types';
-import Slider from 'react-slick';
-import { useState, useRef, useEffect } from 'react';
+import PropTypes from "prop-types";
+import Slider from "react-slick";
+import { useState, useRef, useEffect } from "react";
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { alpha, styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
 //
-import Image from '../../../../components/Image';
-import LightboxModal from '../../../../components/LightboxModal';
-import { CarouselArrowIndex } from '../../../../components/carousel';
+import Image from "../../../../components/Image";
+import LightboxModal from "../../../../components/LightboxModal";
+import { CarouselArrowIndex } from "../../../../components/carousel";
 
 // ----------------------------------------------------------------------
 
 const THUMB_SIZE = 64;
 
-const RootStyle = styled('div')(({ theme }) => ({
-  '& .slick-slide': {
-    float: theme.direction === 'rtl' ? 'right' : 'left',
-    '&:focus': { outline: 'none' },
+const RootStyle = styled("div")(({ theme }) => ({
+  "& .slick-slide": {
+    float: theme.direction === "rtl" ? "right" : "left",
+    "&:focus": { outline: "none" },
   },
 }));
 
@@ -68,7 +68,7 @@ export default function ProductDetailsCarousel({ product }) {
     swipeToSlide: true,
     focusOnSelect: true,
     variableWidth: true,
-    centerPadding: '0px',
+    centerPadding: "0px",
     slidesToShow: product.images.length > 3 ? 3 : product.images.length,
   };
 
@@ -92,16 +92,23 @@ export default function ProductDetailsCarousel({ product }) {
   return (
     <RootStyle>
       <Box sx={{ p: 1 }}>
-        <Box sx={{ zIndex: 0, borderRadius: 2, overflow: 'hidden', position: 'relative' }}>
+        <Box
+          sx={{
+            zIndex: 0,
+            borderRadius: 2,
+            overflow: "hidden",
+            position: "relative",
+          }}
+        >
           <Slider {...settings1} asNavFor={nav2} ref={slider1}>
             {product.images.map((img) => (
               <Image
                 key={img}
                 alt="large image"
                 src={img}
-                ratio="1/1"
+                ratio="16/9"
                 onClick={() => handleOpenLightbox(img)}
-                sx={{ cursor: 'zoom-in' }}
+                sx={{ cursor: "zoom-in" }}
               />
             ))}
           </Slider>
@@ -117,28 +124,29 @@ export default function ProductDetailsCarousel({ product }) {
       <Box
         sx={{
           my: 3,
-          mx: 'auto',
-          '& .slick-current .isActive': { opacity: 1 },
+          mx: "auto",
+          "& .slick-current .isActive": { opacity: 1 },
           ...(product.images.length === 1 && { maxWidth: THUMB_SIZE * 1 + 16 }),
           ...(product.images.length === 2 && { maxWidth: THUMB_SIZE * 2 + 32 }),
           ...(product.images.length === 3 && { maxWidth: THUMB_SIZE * 3 + 48 }),
           ...(product.images.length === 4 && { maxWidth: THUMB_SIZE * 3 + 48 }),
           ...(product.images.length >= 5 && { maxWidth: THUMB_SIZE * 6 }),
           ...(product.images.length > 2 && {
-            position: 'relative',
-            '&:before, &:after': {
+            position: "relative",
+            "&:before, &:after": {
               top: 0,
               zIndex: 9,
               content: "''",
-              height: '100%',
-              position: 'absolute',
+              height: "100%",
+              position: "absolute",
               width: (THUMB_SIZE * 2) / 3,
               backgroundImage: (theme) =>
-                `linear-gradient(to left, ${alpha(theme.palette.background.paper, 0)} 0%, ${
-                  theme.palette.background.paper
-                } 100%)`,
+                `linear-gradient(to left, ${alpha(
+                  theme.palette.background.paper,
+                  0
+                )} 0%, ${theme.palette.background.paper} 100%)`,
             },
-            '&:after': { right: 0, transform: 'scaleX(-1)' },
+            "&:after": { right: 0, transform: "scaleX(-1)" },
           }),
         }}
       >
@@ -153,9 +161,10 @@ export default function ProductDetailsCarousel({ product }) {
                   width: THUMB_SIZE,
                   height: THUMB_SIZE,
                   borderRadius: 1.5,
-                  cursor: 'pointer',
+                  cursor: "pointer",
                   ...(currentIndex === index && {
-                    border: (theme) => `solid 3px ${theme.palette.primary.main}`,
+                    border: (theme) =>
+                      `solid 3px ${theme.palette.primary.main}`,
                   }),
                 }}
               />

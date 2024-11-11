@@ -1,67 +1,126 @@
-import * as Yup from 'yup';
-import { useSnackbar } from 'notistack';
-// form
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useSnackbar } from "notistack";
 // @mui
-import { Stack, Card } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-// components
-import { FormProvider, RHFTextField } from '../../../../components/hook-form';
+import {
+  Button,
+  Stack,
+  Card,
+  TextField,
+  Typography,
+  Grid,
+} from "@mui/material";
+import { useDispatch } from "react-redux";
+import { setLoading } from "../../../../features/globalSlice";
+import { useState } from "react";
+import firebase from "firebase/compat";
+import { auth } from "../../../../firebase";
 
 // ----------------------------------------------------------------------
 
 export default function AccountChangePassword() {
+  const dispatch = useDispatch();
+
   const { enqueueSnackbar } = useSnackbar();
 
-  const ChangePassWordSchema = Yup.object().shape({
-    oldPassword: Yup.string().required('Old Password is required'),
-    newPassword: Yup.string().min(6, 'Password must be at least 6 characters').required('New Password is required'),
-    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword'), null], 'Passwords must match'),
-  });
+  const user = firebase.auth().currentUser;
 
-  const defaultValues = {
-    oldPassword: '',
-    newPassword: '',
-    confirmNewPassword: '',
-  };
+  const [newPassword, setNewPassword] = useState("");
 
-  const methods = useForm({
-    resolver: yupResolver(ChangePassWordSchema),
-    defaultValues,
-  });
-
-  const {
-    reset,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
-
-  const onSubmit = async () => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      enqueueSnackbar('Update success!');
-    } catch (error) {
-      console.error(error);
+  const resetPass = async () => {
+    dispatch(setLoading(true));
+    if (newPassword === "") {
+      enqueueSnackbar("Please provide a new password", {
+        variant: "error",
+      });
+      dispatch(setLoading(false));
+    } else if (newPassword && newPassword?.length < 6) {
+      enqueueSnackbar(
+        "Please provide a password containing at least 6 characters",
+        {
+          variant: "error",
+        }
+      );
+      dispatch(setLoading(false));
+    } else {
+      user
+        .updatePassword(newPassword)
+        .then(() => {
+          // Update successful.
+          enqueueSnackbar(
+            "Password updated successfully. Please login again with your new password.",
+            {
+              variant: "success",
+            }
+          );
+          setNewPassword("");
+          dispatch(setLoading(false));
+          auth.signOut();
+        })
+        .catch((error) => {
+          enqueueSnackbar(
+            `An error occured while updating password: ${error?.message || ""}`,
+            {
+              variant: "error",
+            }
+          );
+          dispatch(setLoading(false));
+        });
     }
+
+    /*   if (s_email === '') {
+      enqueueSnackbar(
+        'Your email address has not yet been detected. Please login again to the website. May be there is a timeout.',
+        {
+          variant: 'error',
+        }
+      );
+      dispatch(setLoading(false));
+    } else {
+      await auth
+        .sendPasswordResetEmail(s_email)
+        .then(() => {
+          enqueueSnackbar('Reset url has been sent to you by email.');
+          dispatch(setLoading(false));
+        })
+        .catch((error) => {
+          enqueueSnackbar(`Error occured: ${error?.message}`);
+          dispatch(setLoading(false));
+        });
+    } */
   };
 
   return (
-    <Card sx={{ p: 3 }}>
-      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={3} alignItems="flex-end">
-          <RHFTextField name="oldPassword" type="password" label="Old Password" />
+    <Grid container justifyContent={"center"} alignItems={"center"}>
+      <Grid item xs={12} md={6}>
+        <Card sx={{ p: 3 }}>
+          <Stack spacing={5}>
+            <Typography>
+              {/* A reset password email with a reset password link will be sent to the email below. Then you will need to
+              click the url and reset your password. */}
+              Please enter a new password
+            </Typography>
+            <TextField
+              variant="outlined"
+              size="small"
+              margin="normal"
+              fullWidth
+              name="newPassword"
+              label="New password"
+              type="text"
+              id="newPassword"
+              value={newPassword || ""}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
 
-          <RHFTextField name="newPassword" type="password" label="New Password" />
-
-          <RHFTextField name="confirmNewPassword" type="password" label="Confirm New Password" />
-
-          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            Save Changes
-          </LoadingButton>
-        </Stack>
-      </FormProvider>
-    </Card>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => resetPass()}
+            >
+              Submit
+            </Button>
+          </Stack>
+        </Card>
+      </Grid>
+    </Grid>
   );
 }

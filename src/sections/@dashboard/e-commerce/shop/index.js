@@ -1,6 +1,11 @@
-export { default as ShopTagFiltered } from './ShopTagFiltered';
-export { default as ShopProductCard } from './ShopProductCard';
-export { default as ShopProductList } from './ShopProductList';
-export { default as ShopProductSort } from './ShopProductSort';
-export { default as ShopFilterSidebar } from './ShopFilterSidebar';
-export { default as ShopProductSearch } from './ShopProductSearch';
+export { default as ShopTagFiltered } from "./ShopTagFiltered";
+export { default as ShopTagFilteredServices } from "./ShopTagFilteredServices";
+export { default as ShopFilterSidebarServices } from "./ShopFilterSidebarServices";
+export { default as ShopProductCard } from "./ShopProductCard";
+export { default as ShopProductCardServices } from "./ShopProductCardServices";
+export { default as ShopProductList } from "./ShopProductList";
+export { default as ShopProductListServices } from "./ShopProductListServices";
+export { default as ShopProductSort } from "./ShopProductSort";
+export { default as ShopFilterSidebar } from "./ShopFilterSidebar";
+export { default as ShopProductSearch } from "./ShopProductSearch";
+export { default as ShopProductSearchServices } from "./ShopProductSearchServices";

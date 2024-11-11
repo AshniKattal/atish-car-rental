@@ -1,0 +1,140 @@
+
+
+@keyframes gradient-move {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+
+  .lottie-check-container {
+    position: relative;
+    width: 225px; /* Set desired width */
+    height: 200px; /* Set desired height */
+  }
+  
+  .lottie-check-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px; /* Set desired width */
+    height: 200px; /* Set desired height */
+    z-index: 1; /* Behind the foreground */
+  }
+  
+  .lottie-check-foreground {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* In front of the background */
+  }
+
+
+  .lottie-container {
+    position: relative;
+    width: 600px; /* Set desired width */
+    height: 600px; /* Set desired height */
+  }
+  
+  .lottie-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Behind the foreground */
+  }
+  
+  .lottie-foreground {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    z-index: 2; /* In front of the background */
+  }
+
+  .hidden-div {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s, visibility 0s 5s;
+  }
+  
+  .show-div {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 1s, visibility 0s;
+  }
+
+  .moving-div {
+    position: relative;
+    animation: moveUpDown 3s ease-in-out infinite;
+  }
+  
+  @keyframes moveUpDown {
+    0% {
+      top: 0;
+    }
+    50% {
+      top: 25px; /* Move down 50px */
+    }
+    100% {
+      top: 0; /* Move back to the original position */
+    }
+  }
+
+
+  .moving-bell-div   {
+    position: relative;
+    animation: ringEffect 3s ease-in-out infinite;
+  }
+
+  @keyframes ringEffect {
+    0% {
+        left: 0;
+      }
+      50% {
+        left: 15px; /* Move down 50px */
+      }
+      100% {
+        left: 0; /* Move back to the original position */
+      }
+
+
+  }
+
+
+  .animatedBackground {
+    /* Initial transform state */
+    transform: scale(1);
+
+    /* Animation */
+    animation: scaleBackground 15s forwards; /* 5s animation, forward keeps final state */
+  }
+
+  /* Keyframes for scaling animation */
+  @keyframes scaleBackground {
+    from {
+      transform: scale(1); /* Start with normal size */
+    }
+    to {
+      transform: scale(1.2); /* Slowly scale to 1.2x over 5 seconds */
+    }
+  }
+
+  .scroll-up-text {
+    position: relative;
+   /*  top: 50px; */
+    transition: transform 0.1s ease-out;
+  }

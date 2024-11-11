@@ -1,18 +1,79 @@
-@font-face {
-  font-family: 'CircularStd';
+/* @font-face {
+  font-family: 'Cansu';
   font-weight: 400;
   font-style: normal;
   src: local('CircularStd'), url('CircularStd-Book.otf') format('opentype');
+  src: local('Cansu'), url('Cansu-Light.otf') format('opentype');
 }
 @font-face {
-  font-family: 'CircularStd';
+  font-family: 'Cansu';
   font-weight: 500;
   font-style: normal;
   src: local('CircularStd'), url('CircularStd-Medium.otf') format('opentype');
+ src: local('Cansu'), url('Cansu-Regular.otf') format('opentype');
 }
 @font-face {
-  font-family: 'CircularStd';
+  font-family: 'Cansu';
   font-weight: 700;
   font-style: normal;
   src: local('CircularStd'), url('CircularStd-Bold.otf') format('opentype');
+ src: local('Cansu'), url('Cansu-Bold.otf') format('opentype');
 }
+ */
+
+ 
+@font-face {
+  font-family: 'Inter';
+  font-weight: 100;
+  font-style: normal;
+  src: local('Inter'), url('Inter-Thin.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 200;
+  font-style: normal;
+  src: local('Inter'), url('Inter-ExtraLight.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 300;
+  font-style: normal;
+  src: local('Inter'), url('Inter-Light.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-style: normal;
+  src: local('Inter'), url('Inter-Regular.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 500;
+  font-style: normal;
+  src: local('Inter'), url('Inter-Medium.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 600;
+  font-style: normal;
+  src: local('Inter'), url('Inter-SemiBold.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 700;
+  font-style: normal;
+  src: local('Inter'), url('Inter-Bold.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 800;
+  font-style: normal;
+  src: local('Inter'), url('Inter-ExtraBold.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 900;
+  font-style: normal;
+  src: local('Inter'), url('Inter-Black.ttf') format('opentype');
+}
+

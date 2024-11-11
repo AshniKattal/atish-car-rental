@@ -1,28 +1,35 @@
-import PropTypes from 'prop-types';
-import ReactQuill from 'react-quill';
+import PropTypes from "prop-types";
+// editor
+import "../../utils/highlight";
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 // @mui
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
 //
-import EditorToolbar, { formats, redoChange, undoChange } from './EditorToolbar';
+import EditorToolbar, {
+  formats,
+  redoChange,
+  undoChange,
+} from "./EditorToolbar";
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   border: `solid 1px ${theme.palette.grey[500_32]}`,
-  '& .ql-container.ql-snow': {
-    borderColor: 'transparent',
+  "& .ql-container.ql-snow": {
+    borderColor: "transparent",
     ...theme.typography.body1,
     fontFamily: theme.typography.fontFamily,
   },
-  '& .ql-editor': {
+  "& .ql-editor": {
     minHeight: 200,
-    '&.ql-blank::before': {
-      fontStyle: 'normal',
+    "&.ql-blank::before": {
+      fontStyle: "normal",
       color: theme.palette.text.disabled,
     },
-    '& pre.ql-syntax': {
+    "& pre.ql-syntax": {
       ...theme.typography.body2,
       padding: theme.spacing(2),
       borderRadius: theme.shape.borderRadius,
@@ -44,13 +51,14 @@ Editor.propTypes = {
 };
 
 export default function Editor({
-  id = 'minimal-quill',
+  id = "minimal-quill",
   error,
   value,
   onChange,
   simple = false,
   helperText,
   sx,
+  disabled,
   ...other
 }) {
   const modules = {
@@ -89,6 +97,7 @@ export default function Editor({
           modules={modules}
           formats={formats}
           placeholder="Write something awesome..."
+          readOnly={disabled}
           {...other}
         />
       </RootStyle>

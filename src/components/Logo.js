@@ -1,8 +1,12 @@
-import PropTypes from 'prop-types';
-import { Link as RouterLink } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { Link as RouterLink } from "react-router-dom";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
+/* import { useTheme } from '@mui/material/styles'; */
+import { Box } from "@mui/material";
+import LogoPNG from "./logo/Logo.png";
+import LogoPNGCarRentalAtish from "./logo/LogoCarRentalAtish.png";
+import { useSelector } from "react-redux";
+import { selectTemplate } from "src/features/templateSlice";
 
 // ----------------------------------------------------------------------
 
@@ -12,14 +16,34 @@ Logo.propTypes = {
 };
 
 export default function Logo({ disabledLink = false, sx }) {
-  const theme = useTheme();
+  const { template } = useSelector(selectTemplate);
+
+  /*   const theme = useTheme();
   const PRIMARY_LIGHT = theme.palette.primary.light;
   const PRIMARY_MAIN = theme.palette.primary.main;
-  const PRIMARY_DARK = theme.palette.primary.dark;
+  const PRIMARY_DARK = theme.palette.primary.dark; */
 
   const logo = (
-    <Box sx={{ width: 40, height: 40, ...sx }}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 512 512">
+    <Box
+      sx={{
+        width:
+          template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? 100 : 40,
+        height: 40,
+        ...sx,
+      }}
+    >
+      <img
+        src={
+          template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH
+            ? LogoPNGCarRentalAtish
+            : template === process.env.REACT_APP_OWNER_SLARKS
+            ? LogoPNG
+            : ""
+        }
+        style={{ background: "transparent" }}
+        alt="logoImage"
+      />
+      {/*  <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 512 512">
         <defs>
           <linearGradient id="BG1" x1="100%" x2="50%" y1="9.946%" y2="50%">
             <stop offset="0%" stopColor={PRIMARY_DARK} />
@@ -48,7 +72,7 @@ export default function Logo({ disabledLink = false, sx }) {
             d="M450 384c26.509 0 48-21.491 48-48s-21.491-48-48-48-48 21.491-48 48 21.491 48 48 48"
           />
         </g>
-      </svg>
+      </svg> */}
     </Box>
   );
 

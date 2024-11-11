@@ -1,61 +1,61 @@
-import PropTypes from 'prop-types';
-import * as Yup from 'yup';
-// form
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
 // @mui
-import { Stack } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-// hooks
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
-// components
-import { FormProvider, RHFTextField } from '../../../components/hook-form';
+import { Button, Stack, TextField } from "@mui/material";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setLoading } from "../../../features/globalSlice";
+import { auth } from "../../../firebase";
 
 // ----------------------------------------------------------------------
 
-ResetPasswordForm.propTypes = {
-  onSent: PropTypes.func,
-  onGetEmail: PropTypes.func,
-};
+export default function ResetPasswordForm() {
+  const dispatch = useDispatch();
 
-export default function ResetPasswordForm({ onSent, onGetEmail }) {
-  const isMountedRef = useIsMountedRef();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const ResetPasswordSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-  });
+  const [us_s_email, set_us_s_email] = useState("");
 
-  const methods = useForm({
-    resolver: yupResolver(ResetPasswordSchema),
-    defaultValues: { email: 'demo@minimals.cc' },
-  });
-
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
-
-  const onSubmit = async (data) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      if (isMountedRef.current) {
-        onSent();
-        onGetEmail(data.email);
-      }
-    } catch (error) {
-      console.error(error);
+  const resetPassword = async () => {
+    dispatch(setLoading(true));
+    if (us_s_email !== "") {
+      await auth
+        .sendPasswordResetEmail(us_s_email)
+        .then(() => {
+          enqueueSnackbar("Reset url has been sent to you by email.");
+          dispatch(setLoading(false));
+        })
+        .catch((error) => {
+          enqueueSnackbar(`Error occured: ${error?.message}`);
+          dispatch(setLoading(false));
+        });
+    } else {
+      enqueueSnackbar("Email is required", { variant: "error" });
+      dispatch(setLoading(false));
     }
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3}>
-        <RHFTextField name="email" label="Email address" />
+    <Stack spacing={3}>
+      <TextField
+        fullWidth
+        variant="outlined"
+        required
+        id="email"
+        name="email"
+        type="text"
+        value={us_s_email || ""}
+        label="Email address"
+        onChange={(event) => set_us_s_email(event.target.value)}
+      />
 
-        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-          Reset Password
-        </LoadingButton>
-      </Stack>
-    </FormProvider>
+      <Button
+        fullWidth
+        size="large"
+        variant="contained"
+        onClick={() => resetPassword()}
+      >
+        Reset Password
+      </Button>
+    </Stack>
   );
 }

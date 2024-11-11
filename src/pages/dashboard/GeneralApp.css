@@ -1,0 +1,13 @@
+.cardContainer {
+  padding: 1em;
+  min-height: 10em;
+  height: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.cardDiv {
+  height: 100%;
+}
