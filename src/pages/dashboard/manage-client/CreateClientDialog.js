@@ -158,12 +158,12 @@ function CreateClientDialog({
   };
 
   const addClient = async () => {
-    if (companyId) {
+    if (process.env.REACT_APP_COMPANY_ID) {
       dispatch(setLoading(true));
 
       await db
         .collection("company")
-        .doc(companyId)
+        .doc(process.env.REACT_APP_COMPANY_ID)
         .collection("client")
         .add({
           name: name || "",

@@ -86,7 +86,7 @@ export default function ConvertedProformaIndex() {
       dispatch(setLoading(true));
       await db
         .collection("company")
-        .doc(companyDetails?.id)
+        .doc(process.env.REACT_APP_COMPANY_ID)
         .collection("client")
         .orderBy("name", "asc")
         .get()

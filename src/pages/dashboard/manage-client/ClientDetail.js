@@ -198,7 +198,7 @@ const ClientDetail = () => {
       dispatch(setLoading(true));
       await db
         .collection("company")
-        .doc(companySearchId)
+        .doc(process.env.REACT_APP_COMPANY_ID)
         .collection("client")
         .orderBy("name", "asc")
         .get()
@@ -359,7 +359,7 @@ const ClientDetail = () => {
     dispatch(setLoading(true));
     await db
       .collection("company")
-      .doc(companySearchId)
+      .doc(process.env.REACT_APP_COMPANY_ID)
       .collection("client")
       .doc(id)
       .delete()

@@ -282,7 +282,7 @@ export default function ClientSurveyDetail() {
   async function initializeClientList(companyId) {
     await db
       .collection("company")
-      .doc(companyId)
+      .doc(process.env.REACT_APP_COMPANY_ID)
       .collection("client")
       .orderBy("name", "asc")
       .get()

@@ -22,8 +22,10 @@ import HomeAdvertisement from "./HomeAdvertisement";
 import Map from "./Map";
 import CompanyDescription from "./company-description/CompanyDescription";
 import Faqs from "./company-FAQ/Faqs";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useDispatch } from "react-redux";
+import { setBookingData } from "src/features/bookingSlice";
 
 const CarRentalHomeBanner = lazy(() => import("./CarRentalHomeBanner"));
 
@@ -45,6 +47,26 @@ const ContentStyle = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function HomeCarRental() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      setBookingData({
+        bookingPickupAddress: null,
+        bookingPickupAnywhereAddress: "",
+        bookingPickupDate: new Date(),
+        bookingPickupTime: "00:00",
+        bookingReturnDate: new Date(),
+        bookingReturnTime: "00:00",
+        bookingNumberOfDays: 0,
+        bookingBabySeatQty: 0,
+        bookingBoosterSeatQty: 0,
+        bookingChildSeatQty: 0,
+        bookingTotalAmount: 0,
+      })
+    );
+  }, []);
+
   return (
     <Page title="Home page">
       <RootStyle>

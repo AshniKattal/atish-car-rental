@@ -84,7 +84,7 @@ export default function GeneralApp1() {
       // get list of clients for this company
       await db
         .collection("company")
-        .doc(companyId)
+        .doc(process.env.REACT_APP_COMPANY_ID)
         .collection("client")
         .orderBy("name", "asc")
         .get()

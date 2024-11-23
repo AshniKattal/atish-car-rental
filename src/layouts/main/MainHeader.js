@@ -28,7 +28,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectTemplate } from "src/features/templateSlice";
 import useOffSetTop from "src/hooks/useOffSetTop";
 import RegistrationForm from "src/pages/home/registrationDialog/RegistrationDialog";
-import { selectRegister, setOpenDialog } from "src/features/registerSlice";
+import {
+  selectRegister,
+  setCallLocation,
+  setOpenDialog,
+} from "src/features/registerSlice";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import useSettings from "src/hooks/useSettings";
@@ -201,34 +205,18 @@ export default function MainHeader() {
                 </Button>
               ) : (
                 <>
-                  {/* <Button
-                variant="outlined"
-                onClick={() => {
-                  navigate(PATH_PAGE.register);
-                }}
-                size="large"
-              >
-                Register
-              </Button> */}
-
                   <Suspense fallback={<></>}>
-                    {template ===
-                    process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          dispatch(setOpenDialog(true));
-                        }}
-                        className="animate__animated animate__fadeIn animate__delay-1s"
-                        size="large"
-                      >
-                        Sign up
-                      </Button>
-                    ) : template ? (
-                      <RegisterButton home={false} header={true} />
-                    ) : (
-                      <></>
-                    )}
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        dispatch(setCallLocation("header"));
+                        dispatch(setOpenDialog(true));
+                      }}
+                      className="animate__animated animate__fadeIn animate__delay-1s"
+                      size="large"
+                    >
+                      Sign up
+                    </Button>
                   </Suspense>
 
                   <div style={{ padding: "5px" }}></div>
@@ -252,11 +240,7 @@ export default function MainHeader() {
         {<ToolbarShadowStyle />}
       </AppBar>
 
-      {openDialog ? (
-        <RegistrationForm open={openDialog} callLocation="header" />
-      ) : (
-        <></>
-      )}
+      {openDialog ? <RegistrationForm open={openDialog} /> : <></>}
     </>
   );
 }

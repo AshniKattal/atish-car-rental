@@ -92,7 +92,7 @@ export default function SearchComponent() {
     dispatch(setLoading(true));
     await db
       .collection("company")
-      .doc(companyId)
+      .doc(process.env.REACT_APP_COMPANY_ID)
       .collection("client")
       .orderBy("name", "asc")
       .get()

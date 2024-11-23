@@ -102,7 +102,7 @@ function UpdateCompanyDialog({
         // check if name is the same
         await db
           .collection("company")
-          .doc(companyId)
+          .doc(process.env.REACT_APP_COMPANY_ID)
           .collection("client")
           .doc(id)
           .set(

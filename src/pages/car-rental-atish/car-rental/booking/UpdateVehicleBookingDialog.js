@@ -72,8 +72,11 @@ export default function UpdateVehicleBookingDialog({
         { merge: true }
       )
       .then(async () => {
-        if (bookingData?.status === "confirmed") {
-          let contractResult = await createNewContract();
+        /* if (bookingData?.status === "confirmed") {
+          let contractResult = await createNewContract(
+            bookingData?.bookingId,
+            bookingData
+          );
           if (contractResult?.error) {
             enqueueSnackbar(contractResult?.message, {
               variant: "error",
@@ -86,13 +89,13 @@ export default function UpdateVehicleBookingDialog({
               notifyClientAdminAfterUpdate("admin");
             }
           }
-        } else {
-          if (user?.role === "client") {
-            notifyClientAdminAfterUpdate("client");
-          } else if (user?.role !== "client") {
-            notifyClientAdminAfterUpdate("admin");
-          }
+        } else { */
+        if (user?.role === "client") {
+          notifyClientAdminAfterUpdate("client");
+        } else if (user?.role !== "client") {
+          notifyClientAdminAfterUpdate("admin");
         }
+        // }
       })
       .catch((error) => {
         enqueueSnackbar(

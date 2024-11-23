@@ -4,7 +4,10 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   Grid,
+  Tab,
+  Tabs,
   TextField,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -19,14 +22,18 @@ import { useNavigate } from "react-router";
 import useAuth from "src/hooks/useAuth";
 import { selectRegister, setOpenDialog } from "src/features/registerSlice";
 
-export default function RegistrationForm({ open, callLocation }) {
-  const { register } = useAuth();
+export default function RegistrationForm({ open }) {
+  const { register, login } = useAuth();
 
   const { template } = useSelector(selectTemplate);
 
   const dispatch = useDispatch();
 
   const { enqueueSnackbar } = useSnackbar();
+
+  const { callLocation } = useSelector(selectRegister);
+
+  const [tabValue, setTabValue] = useState("register");
 
   const [userDetails, setUserDetails] = useState({
     firstName: "",
@@ -55,21 +62,21 @@ export default function RegistrationForm({ open, callLocation }) {
   } = userDetails;
 
   async function submitDetails() {
-    if (
-      !firstName ||
-      !lastName ||
-      !contactNumber ||
-      !email ||
-      (template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH && !password)
-    ) {
-      enqueueSnackbar("Please fill in all compulsory fields.", {
-        variant: "warning",
-      });
-    } else {
-      if (template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH) {
-        customCarRentalRegistration();
+    if (tabValue === "register") {
+      if (!firstName || !lastName || !contactNumber || !email || !password) {
+        enqueueSnackbar("Please fill in all compulsory fields.", {
+          variant: "warning",
+        });
       } else {
-        standardRegistration();
+        customCarRentalRegistration();
+      }
+    } else if (tabValue === "login") {
+      if (!email || !password) {
+        enqueueSnackbar("Please fill in all compulsory fields.", {
+          variant: "warning",
+        });
+      } else {
+        customCarRentalLogin();
       }
     }
   }
@@ -94,7 +101,7 @@ export default function RegistrationForm({ open, callLocation }) {
     };
 
     try {
-      await register(userObjectParams, callLocation);
+      await register(userObjectParams);
     } catch (error) {
       console.error(error);
       enqueueSnackbar(`Error occured. ${error?.message || ""}`, {
@@ -103,7 +110,18 @@ export default function RegistrationForm({ open, callLocation }) {
     }
   }
 
-  async function standardRegistration() {
+  async function customCarRentalLogin() {
+    try {
+      await login(email, password);
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar(`Error occured. ${error?.message || ""}`, {
+        variant: "error",
+      });
+    }
+  }
+
+  /*  async function standardRegistration() {
     dispatch(setLoading(true));
 
     await db
@@ -151,7 +169,7 @@ export default function RegistrationForm({ open, callLocation }) {
         );
         dispatch(setLoading(false));
       });
-  }
+  } */
 
   function closeDialog() {
     setUserDetails({
@@ -170,13 +188,48 @@ export default function RegistrationForm({ open, callLocation }) {
     dispatch(setOpenDialog(false));
   }
 
+  const handleTabsChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
   return (
     <Dialog open={open} maxWidth={"md"}>
-      <DialogTitle>Registration form</DialogTitle>
+      <DialogTitle>
+        {callLocation === "confirmBooking"
+          ? "Register or Login"
+          : "Register form"}
+      </DialogTitle>
       <DialogContent>
+        <Divider />
         <br />
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
+            {callLocation === "confirmBooking" ? (
+              <>
+                <Tabs
+                  fullWidth
+                  value={tabValue}
+                  onChange={handleTabsChange}
+                  aria-label="register/login tabs"
+                >
+                  <Tab label="Register" value="register" />
+
+                  <Tab label="Login" value="login" />
+                </Tabs>
+                <br />
+                <Divider />
+              </>
+            ) : (
+              <></>
+            )}
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{ display: tabValue === "register" ? "" : "none" }}
+          >
             <TextField
               required
               variant="outlined"
@@ -196,7 +249,12 @@ export default function RegistrationForm({ open, callLocation }) {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{ display: tabValue === "register" ? "" : "none" }}
+          >
             <TextField
               required
               label="Last name"
@@ -216,7 +274,12 @@ export default function RegistrationForm({ open, callLocation }) {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{ display: tabValue === "register" ? "" : "none" }}
+          >
             <TextField
               required
               label="Contact number"
@@ -236,7 +299,12 @@ export default function RegistrationForm({ open, callLocation }) {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{ display: tabValue === "register" ? "" : "none" }}
+          >
             <TextField
               label="Mobile number"
               variant="outlined"
@@ -255,7 +323,12 @@ export default function RegistrationForm({ open, callLocation }) {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{ display: tabValue === "register" ? "" : "none" }}
+          >
             <TextField
               label="NIC"
               variant="outlined"
@@ -274,7 +347,12 @@ export default function RegistrationForm({ open, callLocation }) {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{ display: tabValue === "register" ? "" : "none" }}
+          >
             <TextField
               label="Company name"
               variant="outlined"
@@ -293,7 +371,12 @@ export default function RegistrationForm({ open, callLocation }) {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{ display: tabValue === "register" ? "" : "none" }}
+          >
             <TextField
               label="BRN"
               variant="outlined"
@@ -312,7 +395,12 @@ export default function RegistrationForm({ open, callLocation }) {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{ display: tabValue === "register" ? "" : "none" }}
+          >
             <TextField
               label="VAT"
               variant="outlined"
@@ -351,29 +439,25 @@ export default function RegistrationForm({ open, callLocation }) {
             />
           </Grid>
 
-          {template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
-            <Grid item xs={12} md={6}>
-              <TextField
-                required
-                label="Password"
-                variant="outlined"
-                name="password"
-                id="password"
-                type="text"
-                value={password || ""}
-                size="large"
-                onChange={(event) => {
-                  setUserDetails({
-                    ...userDetails,
-                    password: event.target.value,
-                  });
-                }}
-                fullWidth
-              />
-            </Grid>
-          ) : (
-            <></>
-          )}
+          <Grid item xs={12} md={6}>
+            <TextField
+              required
+              label="Password"
+              variant="outlined"
+              name="password"
+              id="password"
+              type="text"
+              value={password || ""}
+              size="large"
+              onChange={(event) => {
+                setUserDetails({
+                  ...userDetails,
+                  password: event.target.value,
+                });
+              }}
+              fullWidth
+            />
+          </Grid>
         </Grid>
       </DialogContent>
 
@@ -383,7 +467,15 @@ export default function RegistrationForm({ open, callLocation }) {
           color="primary"
           onClick={() => submitDetails()}
           size="large"
-          disabled={!firstName || !lastName || !contactNumber || !email}
+          disabled={
+            (tabValue === "register" &&
+              (!firstName ||
+                !lastName ||
+                !contactNumber ||
+                !email ||
+                !password)) ||
+            (tabValue === "login" && (!email || !password))
+          }
         >
           Submit
         </Button>

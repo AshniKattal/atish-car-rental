@@ -1,4 +1,5 @@
 import {
+  Alert,
   Badge,
   Button,
   Container,
@@ -69,7 +70,7 @@ export default function BookingList() {
       await db
         .collection("vehiclebooking")
         .where("createdByUserId", "==", user?.id)
-        .orderBy("dateCreated", "desc")
+        // .orderBy("dateCreated", "desc")
         .get()
         .then((result) => {
           if (result?.docs?.length > 0) {
@@ -80,7 +81,11 @@ export default function BookingList() {
               }
             });
 
-            setBookingList(arr);
+            const sortedTimestamps = arr.sort(
+              (a, b) => b.dateCreated - a.dateCreated
+            );
+
+            setBookingList(sortedTimestamps);
             dispatch(setLoading(false));
           } else {
             setBookingList([]);
@@ -145,218 +150,229 @@ export default function BookingList() {
             </Stack>
           </Grid>
           <Grid item xs={12} md={12}>
-            <TableContainer>
-              <Table border={1}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell size="small" align="center" />
-                    <TableCell size="small" align="center">
-                      <Typography>Update</Typography>
-                    </TableCell>
-                    <TableCell size="small" align="center">
-                      <Typography>Status</Typography>
-                    </TableCell>
-                    <TableCell size="small" align="center">
-                      <Typography>Booking ID</Typography>
-                    </TableCell>
-                    <TableCell size="small" align="center">
-                      <Typography>Contract</Typography>
-                    </TableCell>
-                    <TableCell size="small" align="center">
-                      <Typography>Client name</Typography>
-                    </TableCell>
-                    <TableCell size="small" align="center">
-                      <Typography>Vehicle</Typography>
-                    </TableCell>
-                    <TableCell size="small" align="center">
-                      <Typography>Pickup date time</Typography>
-                    </TableCell>
-                    <TableCell size="small" align="center">
-                      <Typography>Return date time</Typography>
-                    </TableCell>
-                    <TableCell size="small" align="center">
-                      <Typography>Pickup address</Typography>
-                    </TableCell>
-                    {/* <TableCell size="small" align="center">
-                      <Typography>All booking details</Typography>
-                    </TableCell> */}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {bookingList &&
-                    bookingList?.length > 0 &&
-                    bookingList?.map((booking, index) => (
-                      <TableRow key={index}>
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {index + 1}
-                        </TableCell>
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          <IconButton
-                            color="primary"
-                            onClick={() => {
-                              dispatch(
-                                setBookingData({
-                                  ...booking?.data,
-                                  bookingPickupDate:
-                                    booking?.data?.bookingPickupDate.toDate(),
+            {bookingList && bookingList?.length === 0 ? (
+              <Alert severity="warning">No booking retrieved</Alert>
+            ) : (
+              <TableContainer>
+                <Table border={1}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell size="small" align="center" />
+                      <TableCell size="small" align="center">
+                        <Typography>Update</Typography>
+                      </TableCell>
+                      <TableCell size="small" align="center">
+                        <Typography>Status</Typography>
+                      </TableCell>
+                      <TableCell size="small" align="center">
+                        <Typography>Booking ID</Typography>
+                      </TableCell>
 
-                                  bookingReturnDate:
-                                    booking?.data?.bookingReturnDate.toDate(),
-                                })
-                              );
-                              setOpenUpdateDialog(true);
-                            }}
-                            disabled={
-                              user &&
-                              user?.role === "client" &&
-                              booking?.data?.status === "confirmed"
-                            }
+                      {user && user?.role !== "client" ? (
+                        <TableCell size="small" align="center">
+                          <Typography>Contract</Typography>
+                        </TableCell>
+                      ) : (
+                        <></>
+                      )}
+
+                      <TableCell size="small" align="center">
+                        <Typography>Client name</Typography>
+                      </TableCell>
+                      <TableCell size="small" align="center">
+                        <Typography>Vehicle</Typography>
+                      </TableCell>
+                      <TableCell size="small" align="center">
+                        <Typography>Pickup date time</Typography>
+                      </TableCell>
+                      <TableCell size="small" align="center">
+                        <Typography>Return date time</Typography>
+                      </TableCell>
+                      <TableCell size="small" align="center">
+                        <Typography>Pickup address</Typography>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {bookingList &&
+                      bookingList?.length > 0 &&
+                      bookingList?.map((booking, index) => (
+                        <TableRow key={index}>
+                          <TableCell
+                            size="small"
+                            align="center"
+                            style={{ whiteSpace: "nowrap" }}
                           >
-                            <EditIcon />
-                          </IconButton>
-                        </TableCell>
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{
-                            background:
-                              booking?.data?.status === "pending"
-                                ? theme.palette.warning.main
-                                : booking?.data?.status === "confirmed"
-                                ? theme.palette.success.main
-                                : booking?.data?.status === "declined"
-                                ? theme.palette.error.main
-                                : "",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          <Typography style={{ textTransform: "capitalize" }}>
-                            {booking?.data?.status}
-                          </Typography>
-                        </TableCell>
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {booking?.data?.bookingId || ""}
-                        </TableCell>
+                            {index + 1}
+                          </TableCell>
+                          <TableCell
+                            size="small"
+                            align="center"
+                            style={{ whiteSpace: "nowrap" }}
+                          >
+                            <IconButton
+                              color="primary"
+                              onClick={() => {
+                                dispatch(
+                                  setBookingData({
+                                    ...booking?.data,
+                                    bookingPickupDate:
+                                      booking?.data?.bookingPickupDate.toDate(),
 
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {!booking?.data?.contractId ? (
-                            <Button
-                              variant="contained"
-                              color="info"
-                              onClick={() =>
-                                setOpenConfirmationDialog({
-                                  open: true,
-                                  booking: booking,
-                                })
+                                    bookingReturnDate:
+                                      booking?.data?.bookingReturnDate.toDate(),
+                                  })
+                                );
+                                setOpenUpdateDialog(true);
+                              }}
+                              disabled={
+                                user &&
+                                user?.role === "client" &&
+                                booking?.data?.status === "confirmed"
                               }
                             >
-                              Create contract
-                            </Button>
-                          ) : (
-                            <Stack
-                              direction={"row"}
-                              alignItems={"center"}
-                              justifyContent={"center"}
-                              spacing={2}
+                              <EditIcon />
+                            </IconButton>
+                          </TableCell>
+                          <TableCell
+                            size="small"
+                            align="center"
+                            style={{
+                              background:
+                                booking?.data?.status === "pending"
+                                  ? theme.palette.warning.main
+                                  : booking?.data?.status === "confirmed"
+                                  ? theme.palette.success.main
+                                  : booking?.data?.status === "declined"
+                                  ? theme.palette.error.main
+                                  : "",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            <Typography style={{ textTransform: "capitalize" }}>
+                              {booking?.data?.status}
+                            </Typography>
+                          </TableCell>
+                          <TableCell
+                            size="small"
+                            align="center"
+                            style={{ whiteSpace: "nowrap" }}
+                          >
+                            {booking?.data?.bookingId || ""}
+                          </TableCell>
+
+                          {user && user?.role !== "client" ? (
+                            <TableCell
+                              size="small"
+                              align="center"
+                              style={{ whiteSpace: "nowrap" }}
                             >
-                              <IconButton
-                                variant="contained"
-                                color="info"
-                                onClick={() => {
-                                  handleViewDownloadAtishRecto(
-                                    "view",
-                                    booking?.data?.createdByUserId,
-                                    booking
-                                  );
-                                }}
-                              >
-                                <Iconify icon={"carbon:view"} />
-                              </IconButton>
+                              {!booking?.data?.contractId ? (
+                                <Button
+                                  variant="contained"
+                                  color="info"
+                                  onClick={() =>
+                                    setOpenConfirmationDialog({
+                                      open: true,
+                                      booking: booking,
+                                    })
+                                  }
+                                >
+                                  Create contract
+                                </Button>
+                              ) : (
+                                <Stack
+                                  direction={"row"}
+                                  alignItems={"center"}
+                                  justifyContent={"center"}
+                                  spacing={2}
+                                >
+                                  <IconButton
+                                    variant="contained"
+                                    color="info"
+                                    onClick={() => {
+                                      handleViewDownloadAtishRecto(
+                                        "view",
+                                        booking?.data?.createdByUserId,
+                                        booking
+                                      );
+                                    }}
+                                  >
+                                    <Iconify icon={"carbon:view"} />
+                                  </IconButton>
 
-                              <IconButton
-                                variant="contained"
-                                color="info"
-                                onClick={() => {
-                                  handleViewDownloadAtishRecto(
-                                    "download",
-                                    booking?.data?.createdByUserId,
-                                    booking
-                                  );
-                                }}
-                              >
-                                <Iconify icon={"eva:download-fill"} />
-                              </IconButton>
-                            </Stack>
+                                  <IconButton
+                                    variant="contained"
+                                    color="info"
+                                    onClick={() => {
+                                      handleViewDownloadAtishRecto(
+                                        "download",
+                                        booking?.data?.createdByUserId,
+                                        booking
+                                      );
+                                    }}
+                                  >
+                                    <Iconify icon={"eva:download-fill"} />
+                                  </IconButton>
+                                </Stack>
+                              )}
+                            </TableCell>
+                          ) : (
+                            <></>
                           )}
-                        </TableCell>
 
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {booking?.data?.clientName || ""}
-                        </TableCell>
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {booking?.data?.vehicleDetails?.name || ""}
-                        </TableCell>
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {`${moment(
-                            booking?.data?.bookingPickupDate.toDate()
-                          ).format("DD/MM/YYYY")}, ${
-                            booking?.data?.bookingPickupTime
-                          }`}
-                        </TableCell>
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {`${moment(
-                            booking?.data?.bookingReturnDate.toDate()
-                          ).format("DD/MM/YYYY")}, ${
-                            booking?.data?.bookingReturnTime
-                          }`}
-                        </TableCell>
-                        <TableCell
-                          size="small"
-                          align="center"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          {booking?.data?.bookingPickupAddress?.id ===
-                          "anywhere"
-                            ? booking?.data?.bookingPickupAnywhereAddress
-                            : booking?.data?.bookingPickupAddress?.title}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                          <TableCell
+                            size="small"
+                            align="center"
+                            style={{ whiteSpace: "nowrap" }}
+                          >
+                            {booking?.data?.clientName || ""}
+                          </TableCell>
+                          <TableCell
+                            size="small"
+                            align="center"
+                            style={{ whiteSpace: "nowrap" }}
+                          >
+                            {booking?.data?.vehicleDetails?.name || ""}
+                          </TableCell>
+                          <TableCell
+                            size="small"
+                            align="center"
+                            style={{ whiteSpace: "nowrap" }}
+                          >
+                            {`${moment(
+                              booking?.data?.bookingPickupDate.toDate()
+                            ).format("DD/MM/YYYY")}, ${
+                              booking?.data?.bookingPickupTime
+                            }`}
+                          </TableCell>
+                          <TableCell
+                            size="small"
+                            align="center"
+                            style={{ whiteSpace: "nowrap" }}
+                          >
+                            {`${moment(
+                              booking?.data?.bookingReturnDate.toDate()
+                            ).format("DD/MM/YYYY")}, ${
+                              booking?.data?.bookingReturnTime
+                            }`}
+                          </TableCell>
+                          <TableCell
+                            size="small"
+                            align="center"
+                            style={{ whiteSpace: "nowrap" }}
+                          >
+                            {booking?.data?.bookingPickupAddress?.id ===
+                            "anywhere"
+                              ? booking?.data?.bookingPickupAnywhereAddress
+                              : booking?.data?.bookingPickupAddress?.title}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
           </Grid>
         </Grid>
       </Container>

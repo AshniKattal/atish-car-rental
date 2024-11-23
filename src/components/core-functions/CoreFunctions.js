@@ -320,6 +320,7 @@ export async function saveNewBooking(bookingId, product, bookingData, user) {
         clientName: `${user?.lastName || ""} ${user?.firstName || ""}`,
         clientMobile: user?.phoneNumber || "",
         clientEmail: user?.email || "",
+        bookingId: bookingId,
       })
       .then(async () => {
         resolve({

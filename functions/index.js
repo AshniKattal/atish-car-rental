@@ -614,7 +614,7 @@ exports.testscheduler = onRequest(async (req, res) => {
                               let clientDoc = await admin
                                 .firestore()
                                 .collection("company")
-                                .doc(company?.companyId)
+                                .doc(process.env.REACT_APP_COMPANY_ID)
                                 .collection("client")
                                 .doc(doc?.data()?.clientId)
                                 .get();
@@ -1201,7 +1201,7 @@ exports.scheduledMRAFiscalisationfinal = functions.pubsub
                                   await admin
                                     .firestore()
                                     .collection("company")
-                                    .doc(company?.companyId)
+                                    .doc(process.env.REACT_APP_COMPANY_ID)
                                     .collection("client")
                                     .doc(doc?.data()?.clientId)
                                     .get()

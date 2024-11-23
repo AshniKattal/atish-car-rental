@@ -64,17 +64,12 @@ function registerValidSW(swUrl, config) {
           return;
         }
 
-        let alertShown = false; // Flag to ensure alert shows only once
-
         installingWorker.onstatechange = () => {
-          if (installingWorker.state === "installed" && !alertShown) {
-            alertShown = true; // Set flag to true after showing the alert
-            alert("New version available! Ready to update?");
-            if (registration.waiting) {
-              registration.waiting.postMessage({ type: "SKIP_WAITING" });
-            }
-            window.location.reload();
+          // alert("New version available");
+          if (registration && registration.waiting) {
+            registration.waiting.postMessage({ type: "SKIP_WAITING" });
           }
+          window.location.reload();
 
           /* alert("New version available!  Ready to update?");
           if (registration && registration.waiting) {

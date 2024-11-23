@@ -40,6 +40,7 @@ import { dynamicSort } from "src/components/core-functions/SelectionCoreFunction
 import { selectTemplate } from "src/features/templateSlice";
 import {
   selectRegister,
+  setCallLocation,
   setMessage,
   setOpenDialog,
 } from "src/features/registerSlice";
@@ -340,8 +341,43 @@ function AuthProvider({ children }) {
     dispatch(resetSnackbar());
   }
 
-  const login = (email, password) =>
-    signInWithEmailAndPassword(AUTH, email, password);
+  const login = async (email, password) => {
+    await signInWithEmailAndPassword(AUTH, email, password)
+      .then(async (user) => {
+        if (callLocation === "confirmBooking") {
+          setLoading(true);
+
+          await db
+            .collection("users")
+            .doc(user?.user?.uid)
+            .get()
+            .then(async (doc) => {
+              if (doc.exists) {
+                await confirmBooking(
+                  user?.user?.uid,
+                  doc?.data()?.firstName,
+                  doc?.data()?.lastName,
+                  doc?.data()?.email
+                );
+              } else {
+                dispatchAction(
+                  setMessage({
+                    message: "User details cannot be retrieved.",
+                    variant: "error",
+                  })
+                );
+
+                setLoading(true);
+              }
+            });
+        }
+      })
+      .catch((error) => {
+        dispatchAction(
+          setMessage({ message: error?.message || "", variant: "error" })
+        );
+      });
+  };
 
   const register = async (userDetail) => {
     await createUserWithEmailAndPassword(
@@ -365,6 +401,28 @@ function AuthProvider({ children }) {
             { merge: true }
           );
 
+        await db
+          .collection("company")
+          .doc(process.env.REACT_APP_COMPANY_ID)
+          .collection("client")
+          .doc(res.user?.uid)
+          .set(
+            {
+              uid: res.user?.uid,
+              id: res.user?.uid,
+              displayName: `${userDetail?.firstName || ""} ${
+                userDetail?.lastName || ""
+              }`,
+              name: `${userDetail?.firstName || ""} ${
+                userDetail?.lastName || ""
+              }`,
+              ...userDetail,
+              companyRefId: process.env.REACT_APP_COMPANY_ID,
+              companyRefName: process.env.REACT_APP_COMPANY_NAME,
+            },
+            { merge: true }
+          );
+
         if (callLocation === "confirmBooking") {
           await confirmBooking(
             res.user?.uid,
@@ -374,6 +432,8 @@ function AuthProvider({ children }) {
           );
         } else {
           setLoading(false);
+
+          dispatch(setCallLocation(""));
 
           dispatchAction(
             setMessage({
@@ -394,6 +454,8 @@ function AuthProvider({ children }) {
 
   async function confirmBooking(userId, firstName, lastName, email) {
     setLoading(true);
+
+    dispatchAction(setCallLocation(""));
 
     let bookingIdResult = await getNewBookingId();
 
