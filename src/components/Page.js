@@ -3,13 +3,10 @@ import { Helmet } from "react-helmet-async";
 import { forwardRef } from "react";
 // @mui
 import { Box } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectTemplate } from "src/features/templateSlice";
 
 // ----------------------------------------------------------------------
 
 const Page = forwardRef(({ children, title = "", meta, ...other }, ref) => {
-  const { template } = useSelector(selectTemplate);
   return (
     <>
       <Helmet>

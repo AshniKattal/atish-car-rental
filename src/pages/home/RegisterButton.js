@@ -1,6 +1,5 @@
 import "animate.css";
 import { Button } from "@mui/material";
-import { useState } from "react";
 import Iconify from "../../components/Iconify";
 import RegistrationForm from "./registrationDialog/RegistrationDialog";
 import backgroundImage from "./features/images/background11.png";

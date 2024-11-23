@@ -162,7 +162,7 @@ export default function MainHeader() {
             <Box sx={{ flexGrow: 1 }} />
 
             <Box sx={{ display: "flex", alignItems: "center", gap: "1px" }}>
-              {template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
+              {/* {template === process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
                 <Tooltip title="Website is under construction, Please register an account for now, and we will contact you later. Thank you.">
                   <Alert severity="error">
                     {isDesktop
@@ -172,7 +172,7 @@ export default function MainHeader() {
                 </Tooltip>
               ) : (
                 <></>
-              )}
+              )} */}
 
               {theme.palette.mode === "light" ? (
                 <Tooltip title="Dark mode">

@@ -46,7 +46,7 @@ import { selectDocument } from "../../../features/documentSlice";
 import CurrencyFormat from "react-currency-format";
 import useAuth from "../../../hooks/useAuth";
 import Iconify from "../../../components/Iconify";
-import { handleViewDownload } from "../../../components/core-functions/SelectionCoreFunctions";
+
 import { setBookingData } from "src/features/bookingSlice";
 import UpdateVehicleBookingDialog from "src/pages/car-rental-atish/car-rental/booking/UpdateVehicleBookingDialog";
 
@@ -69,13 +69,13 @@ export default function PaymentIndex() {
 
   const temp_fetch_invoice_ref = useRef();
 
-  const [logo, setLogo] = useState("");
+  // const [logo, setLogo] = useState("");
 
-  const [sigImage, setSigImage] = useState("");
+  // const [sigImage, setSigImage] = useState("");
 
-  const temp_logo_image_ref = useRef();
+  // const temp_logo_image_ref = useRef();
 
-  const temp_signature_image_ref = useRef();
+  // const temp_signature_image_ref = useRef();
 
   /*   const { companyPaymentSelected, clientPaymentSelected } =
     useSelector(selectPaymentSection); */
@@ -118,12 +118,12 @@ export default function PaymentIndex() {
   const [openPartialPaymentFieldDialog, set_openPartialPaymentFieldDialog] =
     useState(false);
 
-  useEffect(() => {
-    // convert logo image to adaptable react-pdf image
-    temp_logo_image_ref.current();
-    // convert signature image to adaptable react-pdf image
-    temp_signature_image_ref.current();
-  }, [companyDetails]);
+  // useEffect(() => {
+  //   // convert logo image to adaptable react-pdf image
+  //   temp_logo_image_ref.current();
+  //   // convert signature image to adaptable react-pdf image
+  //   temp_signature_image_ref.current();
+  // }, [companyDetails]);
 
   useEffect(() => {
     temp_fetch_invoice_ref.current();
@@ -135,49 +135,49 @@ export default function PaymentIndex() {
     paymentDocType,
   ]);
 
-  async function getLogoImage() {
-    if (
-      companyDetails?.data?.imageUrl &&
-      companyDetails?.data?.imageUrl !== ""
-    ) {
-      dispatch(setLoading(true));
-      let logoImage = await toDataUrl(companyDetails?.data?.imageUrl);
-      setLogo(logoImage);
-    }
-  }
+  // async function getLogoImage() {
+  //   if (
+  //     companyDetails?.data?.imageUrl &&
+  //     companyDetails?.data?.imageUrl !== ""
+  //   ) {
+  //     dispatch(setLoading(true));
+  //     let logoImage = await toDataUrl(companyDetails?.data?.imageUrl);
+  //     setLogo(logoImage);
+  //   }
+  // }
 
-  temp_logo_image_ref.current = getLogoImage;
+  // temp_logo_image_ref.current = getLogoImage;
 
-  async function getSignatureImage() {
-    if (companyDetails?.data?.sigUrl && companyDetails?.data?.sigUrl !== "") {
-      dispatch(setLoading(true));
-      let sigImage = await toDataUrl(companyDetails?.data?.sigUrl);
-      setSigImage(sigImage);
-    }
-  }
+  // async function getSignatureImage() {
+  //   if (companyDetails?.data?.sigUrl && companyDetails?.data?.sigUrl !== "") {
+  //     dispatch(setLoading(true));
+  //     let sigImage = await toDataUrl(companyDetails?.data?.sigUrl);
+  //     setSigImage(sigImage);
+  //   }
+  // }
 
-  temp_signature_image_ref.current = getSignatureImage;
+  // temp_signature_image_ref.current = getSignatureImage;
 
-  async function toDataUrl(url) {
-    if (url === "") {
-      return "";
-    } else {
-      try {
-        const data = await fetch(url);
-        const blob = await data.blob();
-        return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(blob);
-          reader.onloadend = () => {
-            const base64data = reader.result;
-            resolve(base64data);
-          };
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }
+  // async function toDataUrl(url) {
+  //   if (url === "") {
+  //     return "";
+  //   } else {
+  //     try {
+  //       const data = await fetch(url);
+  //       const blob = await data.blob();
+  //       return new Promise((resolve) => {
+  //         const reader = new FileReader();
+  //         reader.readAsDataURL(blob);
+  //         reader.onloadend = () => {
+  //           const base64data = reader.result;
+  //           resolve(base64data);
+  //         };
+  //       });
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   }
+  // }
 
   async function fetchInvoice() {
     if (

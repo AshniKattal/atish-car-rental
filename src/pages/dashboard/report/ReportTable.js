@@ -1,6 +1,5 @@
 import {
   FormControl,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -15,8 +14,6 @@ import {
 import React, { Fragment, useState } from "react";
 import moment from "moment";
 import CurrencyFormat from "react-currency-format";
-import Iconify from "../../../components/Iconify";
-import { handleViewDownload } from "../../../components/core-functions/SelectionCoreFunctions";
 
 function ReportTable({
   logo,

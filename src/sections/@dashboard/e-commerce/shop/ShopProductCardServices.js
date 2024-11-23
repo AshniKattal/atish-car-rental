@@ -2,15 +2,7 @@ import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 // @mui
-import {
-  Box,
-  Card,
-  Typography,
-  Stack,
-  Avatar,
-  Badge,
-  Tooltip,
-} from "@mui/material";
+import { Box, Card, Typography, Stack, Avatar, Tooltip } from "@mui/material";
 // routes
 import { PATH_PAGE } from "../../../../routes/paths";
 // components
@@ -24,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setServiceDetails } from "src/redux/slices/service";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarIcon from "@mui/icons-material/Star";
-import { fCurrency, fShortenNumber } from "src/utils/formatNumber";
+import { fShortenNumber } from "src/utils/formatNumber";
 import CurrencyFormat from "react-currency-format";
 import Iconify from "src/components/Iconify";
 import DoneIcon from "@mui/icons-material/Done";

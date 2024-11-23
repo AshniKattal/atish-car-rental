@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import { m } from "framer-motion";
 // @mui
-import { alpha, styled } from "@mui/material/styles";
-import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
 //
-import Logo from "./Logo";
+
 import ProgressBar from "./ProgressBar";
 import CircularProgress from "@mui/material/CircularProgress";
 

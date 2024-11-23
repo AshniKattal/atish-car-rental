@@ -66,6 +66,32 @@ export default function CarRentalAtishCustomDashboardSections() {
             </m.div>
           </Grid>
 
+          {/*  <Grid item xs={12} md={4}>
+            <m.div variants={varFade().inUp} className="cardDiv">
+              <Card
+                className="cardContainer clickable"
+                onClick={() => {
+                  navigate(PATH_DASHBOARD.general.contracts);
+                }}
+              >
+                <Stack spacing={2}>
+                  <Typography variant="h6">Manage Contract</Typography>
+
+                  <Stack
+                    spacing={1}
+                    direction={"row"}
+                    alignItems={"flex-start"}
+                  >
+                    <PlayCircleOutlineIcon />
+                    <Typography variant="body1">
+                      Manage all contracts
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </Card>
+            </m.div>
+          </Grid> */}
+
           <Grid item xs={12} md={6}>
             <m.div variants={varFade().inUp} className="cardDiv">
               <Card

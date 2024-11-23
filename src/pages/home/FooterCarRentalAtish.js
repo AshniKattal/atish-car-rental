@@ -3,7 +3,6 @@ import "../car-rental-atish/car-rental/Home.css";
 import { styled } from "@mui/material/styles";
 import {
   Grid,
-  Divider,
   Container,
   Typography,
   Stack,
@@ -16,7 +15,6 @@ import SocialsButton from "../../components/SocialsButton";
 import moment from "moment";
 import logoImg from "../../components/logo/LogoCarRentalAtish.png";
 import "../car-rental-atish/car-rental/Home.css";
-import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import useResponsive from "src/hooks/useResponsive";
 
@@ -41,20 +39,20 @@ const LINKS = [
   },
 ];
 
-const LINKSRentalDesk = [
-  {
-    name: `SSR International - Airport of Mauritius,`,
-    href: "https://maps.app.goo.gl/hg2Fg8dAvvrqXQfm9",
-  },
-  {
-    name: `Plaine Magnien,`,
-    href: "https://maps.app.goo.gl/hg2Fg8dAvvrqXQfm9",
-  },
-  {
-    name: `Mauritius`,
-    href: "https://maps.app.goo.gl/hg2Fg8dAvvrqXQfm9",
-  },
-];
+// const LINKSRentalDesk = [
+//   {
+//     name: `SSR International - Airport of Mauritius,`,
+//     href: "https://maps.app.goo.gl/hg2Fg8dAvvrqXQfm9",
+//   },
+//   {
+//     name: `Plaine Magnien,`,
+//     href: "https://maps.app.goo.gl/hg2Fg8dAvvrqXQfm9",
+//   },
+//   {
+//     name: `Mauritius`,
+//     href: "https://maps.app.goo.gl/hg2Fg8dAvvrqXQfm9",
+//   },
+// ];
 
 const RootStyle = styled("div")(({ theme }) => ({
   position: "relative",
@@ -64,8 +62,6 @@ const RootStyle = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function FooterCarRentalAtish() {
-  const navigate = useNavigate();
-
   const theme = useTheme();
 
   const isDesktop = useResponsive("up", "md");

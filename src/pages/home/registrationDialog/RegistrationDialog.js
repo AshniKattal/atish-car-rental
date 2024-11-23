@@ -13,19 +13,11 @@ import {
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../../features/globalSlice";
-import db from "../../../firebase";
-import firebase from "firebase/compat";
-import emailjs from "@emailjs/browser";
-import { selectTemplate } from "src/features/templateSlice";
-import { useNavigate } from "react-router";
 import useAuth from "src/hooks/useAuth";
 import { selectRegister, setOpenDialog } from "src/features/registerSlice";
 
 export default function RegistrationForm({ open }) {
   const { register, login } = useAuth();
-
-  const { template } = useSelector(selectTemplate);
 
   const dispatch = useDispatch();
 

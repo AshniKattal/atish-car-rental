@@ -1,28 +1,16 @@
-import { m } from "framer-motion";
-import { MotionContainer, varFade } from "../../components/animate";
+import { MotionContainer } from "../../components/animate";
 // @mui
-import {
-  Button,
-  Card,
-  Container,
-  Grid,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Container, Grid } from "@mui/material";
 // hooks
 // import useAuth from "../../hooks/useAuth";
 import useSettings from "../../hooks/useSettings";
 // components
 import Page from "../../components/Page";
-import { useNavigate } from "react-router";
-import { PATH_DASHBOARD } from "../../routes/paths";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setDocumentType,
   setCompanyDetails,
   setClientList,
-  selectDocument,
   setCompanyIdSelected,
 } from "../../features/documentSlice";
 import { useEffect, useRef } from "react";
@@ -32,10 +20,8 @@ import { setLoading } from "../../features/globalSlice";
 import useAuth from "../../hooks/useAuth";
 import { selectCompanyList } from "../../features/companySlice";
 import "./GeneralApp.css";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import CarRentalAtishCustomDashboardSections from "./car-rental-atish-custom-dashboard-sections/CarRentalAtishCustomDashboardSections";
-import BugsBeGoneCustomCheckboxManagementSections from "./bugsBeGone-custom-checkbox-management/BugsBeGoneCustomCheckboxManagementSections";
-import { selectTemplate } from "src/features/templateSlice";
+
 /* import {
   handleViewDownloadAtish,
   handleViewDownloadAtishRecto,
@@ -44,21 +30,15 @@ import { selectTemplate } from "src/features/templateSlice";
 // ----------------------------------------------------------------------
 
 export default function GeneralApp1() {
-  const { template } = useSelector(selectTemplate);
-
   const { user } = useAuth();
 
   const { themeStretch } = useSettings();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const { companyList, companyIdSelected } = useSelector(selectCompanyList);
-
-  const { documents } = useSelector(selectDocument);
 
   const initCompanyDetailRef = useRef();
 
@@ -142,7 +122,7 @@ export default function GeneralApp1() {
 
           {/** document creation grid container */}
           <Grid container spacing={3}>
-            {user &&
+            {/* {user &&
             user?.role !== "client" &&
             template !== process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
               <Grid item xs={12} md={6}>
@@ -203,11 +183,6 @@ export default function GeneralApp1() {
                               color="primary"
                               fullWidth
                               onClick={() => {
-                                /* dispatch(
-                                  setDocumentType({
-                                    ...document,
-                                  })
-                                ); */
                                 navigate(PATH_DASHBOARD.general.clientSurvey);
                               }}
                             >
@@ -224,9 +199,9 @@ export default function GeneralApp1() {
               </Grid>
             ) : (
               ""
-            )}
+            )} */}
 
-            {user &&
+            {/* {user &&
             user?.role !== "client" &&
             template !== process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
               <Grid item xs={12} md={3}>
@@ -256,9 +231,9 @@ export default function GeneralApp1() {
               </Grid>
             ) : (
               <></>
-            )}
+            )} */}
 
-            {user &&
+            {/* {user &&
             user?.role !== "client" &&
             template !== process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
               <Grid item xs={12} md={3}>
@@ -288,7 +263,7 @@ export default function GeneralApp1() {
               </Grid>
             ) : (
               <></>
-            )}
+            )} */}
 
             {user?.a_comp &&
             user?.a_comp?.length > 0 &&
@@ -300,7 +275,7 @@ export default function GeneralApp1() {
               <></>
             )}
 
-            {user?.a_comp &&
+            {/* {user?.a_comp &&
             user?.a_comp?.length > 0 &&
             user?.a_comp?.filter(
               (comp) => comp.id === process.env.REACT_APP_CUSTOM_BUGSBEGONE_ID
@@ -308,9 +283,9 @@ export default function GeneralApp1() {
               <BugsBeGoneCustomCheckboxManagementSections />
             ) : (
               <></>
-            )}
+            )} */}
 
-            {user?.a_comp &&
+            {/* {user?.a_comp &&
             user?.a_comp?.length > 0 &&
             user?.a_comp?.filter(
               (comp) =>
@@ -343,9 +318,9 @@ export default function GeneralApp1() {
               </Grid>
             ) : (
               <></>
-            )}
+            )} */}
 
-            {user &&
+            {/* {user &&
             user?.role !== "client" &&
             template !== process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
               <Grid
@@ -398,9 +373,9 @@ export default function GeneralApp1() {
               </Grid>
             ) : (
               <></>
-            )}
+            )} */}
 
-            {user &&
+            {/* {user &&
             user?.role !== "client" &&
             template !== process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
               <Grid
@@ -453,9 +428,9 @@ export default function GeneralApp1() {
               </Grid>
             ) : (
               <></>
-            )}
+            )} */}
 
-            {user &&
+            {/* {user &&
             user?.role !== "client" &&
             template !== process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
               <Grid item xs={12} md={8}>
@@ -503,9 +478,9 @@ export default function GeneralApp1() {
               </Grid>
             ) : (
               <></>
-            )}
+            )} */}
 
-            {user &&
+            {/* {user &&
             user?.role !== "client" &&
             template !== process.env.REACT_APP_OWNER_CAR_RENTAL_ATISH ? (
               <Grid item xs={12} md={4}>
@@ -531,7 +506,7 @@ export default function GeneralApp1() {
               </Grid>
             ) : (
               <></>
-            )}
+            )} */}
           </Grid>
         </Container>
       </MotionContainer>

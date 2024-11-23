@@ -43,6 +43,7 @@ export const PATH_DASHBOARD = {
     clientSurvey: path(ROOTS_DASHBOARD, "/docsurvey"),
     document: path(ROOTS_DASHBOARD, "/document"),
     deletedDocuments: path(ROOTS_DASHBOARD, "/deletedDocuments"),
+    contracts: path(ROOTS_DASHBOARD, "/contracts"),
     mraUnfiscalisedDocuments: path(
       ROOTS_DASHBOARD,
       "/mra-unfiscalised-documents"

@@ -27,7 +27,7 @@ const RootStyle = styled("div")(({ theme }) => ({
 
 export default function LoadingScreenCustom() {
   const globalSlice = useSelector(selectGlobal);
-  const { msg, loading } = globalSlice;
+  const { loading } = globalSlice;
   return (
     <>
       {loading ? (

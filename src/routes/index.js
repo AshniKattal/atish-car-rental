@@ -118,7 +118,7 @@ export default function Router({ ownerTemplate }) {
             </AdminGuard>
           ),
         },
-        {
+        /*  {
           path: "docsurvey",
           element: (
             <AdminGuard>
@@ -133,16 +133,16 @@ export default function Router({ ownerTemplate }) {
               <DocumentIndex />
             </AdminGuard>
           ),
-        },
-        {
+        }, */
+        /* {
           path: "deletedDocuments",
           element: (
             <AdminGuard>
               <DeletedDocumentIndex />
             </AdminGuard>
           ),
-        },
-        {
+        }, */
+        /* {
           path: "mra-unfiscalised-documents",
           element: (
             <AdminGuard>
@@ -157,16 +157,16 @@ export default function Router({ ownerTemplate }) {
               <InvoiceIndex />
             </AdminGuard>
           ),
-        },
+        }, */
 
-        {
+        /* {
           path: "inventory",
           element: (
             <AdminGuard>
               <InventoryIndex />
             </AdminGuard>
           ),
-        },
+        }, */
         {
           path: "payment",
           element: (
@@ -175,22 +175,22 @@ export default function Router({ ownerTemplate }) {
             </AdminGuard>
           ),
         },
-        {
+        /* {
           path: "expense",
           element: (
             <AdminGuard>
               <ExpenseIndex />
             </AdminGuard>
           ),
-        },
-        {
+        }, */
+        /* {
           path: "converted-proforma",
           element: (
             <AdminGuard>
               <ConvertedProformaIndex />
             </AdminGuard>
           ),
-        },
+        }, */
         {
           path: "report",
           element: (
@@ -199,14 +199,14 @@ export default function Router({ ownerTemplate }) {
             </AdminGuard>
           ),
         },
-        {
+        /*  {
           path: "calendar",
           element: (
             <AdminGuard>
               <CalendarIndex />
             </AdminGuard>
           ),
-        },
+        }, */
         {
           path: "company",
           element: (
@@ -259,13 +259,22 @@ export default function Router({ ownerTemplate }) {
         },
 
         {
+          path: "contracts",
+          element: (
+            <AdminGuard>
+              <ContractDetail />
+            </AdminGuard>
+          ),
+        },
+
+        /*  {
           path: "bugsbegone-checkbox-management",
           element: (
             <AdminGuard>
               <BugsBeGoneCustomCheckboxManagementDetail />
             </AdminGuard>
           ),
-        },
+        }, */
 
         {
           path: "administrators",
@@ -434,6 +443,13 @@ const EcommerceProductDetailsServices = Loadable(
 const VehicleDetail = Loadable(
   lazy(() =>
     import("src/pages/car-rental-atish/car-rental/vehicle-detail/VehicleDetail")
+  )
+);
+const ContractDetail = Loadable(
+  lazy(() =>
+    import(
+      "src/pages/car-rental-atish/car-rental/contract-detail/ContractDetail"
+    )
   )
 );
 const BookingVehiclesList = Loadable(

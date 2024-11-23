@@ -2,7 +2,6 @@ import { useState, useEffect, lazy, Suspense, useRef } from "react";
 import db from "../../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Alert,
   Autocomplete,
   Card,
   Container,

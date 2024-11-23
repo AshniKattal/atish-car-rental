@@ -7,7 +7,7 @@ import {
 } from "../../../features/companySlice";
 import { setLoading } from "../../../features/globalSlice";
 import { dynamicSort } from "../../../components/core-functions/SelectionCoreFunctions";
-import { Alert, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import useAuth from "../../../hooks/useAuth";
 import { useSnackbar } from "notistack";
 import useSettings from "src/hooks/useSettings";

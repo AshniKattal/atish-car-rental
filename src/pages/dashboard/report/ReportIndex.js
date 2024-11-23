@@ -59,13 +59,9 @@ export default function ReportIndex() {
     reportDocType,
   } = useSelector(selectDocument);
 
-  const [logo, setLogo] = useState("");
+  // const [logo, setLogo] = useState("");
 
-  const [sigImage, setSigImage] = useState("");
-
-  const temp_logo_image_ref = useRef();
-
-  const temp_signature_image_ref = useRef();
+  // const [sigImage, setSigImage] = useState("");
 
   const temp_fetch_invoice_ref = useRef();
 
@@ -372,8 +368,8 @@ export default function ReportIndex() {
 
               <Suspense fallback={<></>}>
                 <ReportTable
-                  logo={logo}
-                  sigImage={sigImage}
+                  //  logo={logo}
+                  // sigImage={sigImage}
                   companyDetails={companyDetails}
                   clientDocumentObjectSelected={clientDocumentObjectSelected}
                   documents={documents}

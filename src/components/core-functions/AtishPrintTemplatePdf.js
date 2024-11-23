@@ -11,7 +11,7 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 // ----------------------------------------------------------------------
 
 export default function AtishPrintTemplatePdf() {
-  const verificationList = [
+  /*   const verificationList = [
     "Front lights / Faux avant",
     "Rear lights / Faux arrière",
     "Antenna / Antenna",
@@ -26,7 +26,7 @@ export default function AtishPrintTemplatePdf() {
     "Car seat / Siège bébé",
     "Radio",
     "Seats / Sièges",
-  ];
+  ]; */
 
   return (
     <Page size="A4" style={styles.page} wrap={false}>

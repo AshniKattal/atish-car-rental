@@ -4,26 +4,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Checkbox,
   Stack,
-  Autocomplete,
   Divider,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLoading } from "../../../features/globalSlice";
-import db, { functions } from "../../../firebase";
+import { functions } from "../../../firebase";
 import {
   ValidatePassword,
   ValidateEmptyInput,
